@@ -11,11 +11,11 @@ import pickle
 X = []
 y = []
 
-files_name = [f for f in listdir('img') if isfile(join('img', f))]
+files_name = [f for f in listdir('image_bar') if isfile(join('image_bar', f))]
 for name in files_name:
     try:
         # load the image
-        img = cv2.imread(join('img', name),0)
+        img = cv2.imread(join('image_bar', name),0)
         img = img[400:900,700:1650]
         # blur to remove details
         img = cv2.blur(img,(10,10))
@@ -35,28 +35,29 @@ for name in files_name:
 
 
 # split for testing
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=42)
 
 # scale the data
 scaler = StandardScaler()
 scaler.fit(X_train)
 X_train = scaler.transform(X_train)
+X_val = scaler.transform(X_val)
 X_test = scaler.transform(X_test)
 
 
-clf_mlp = MLPClassifier(solver='lbfgs', alpha=0.1, random_state=1 ,hidden_layer_sizes=50, max_iter=2000)
-clf_mlp.fit(X_train, y_train)
+model = MLPClassifier(solver='lbfgs', alpha=0.1, random_state=1 ,hidden_layer_sizes=15, max_iter=2000)
+#train the model
+history = model.fit(X_train,y_train)
 
-clf_cnn = MLPClassifier(solver='lbfgs', alpha=0.1, random_state=1 ,hidden_layer_sizes=50, max_iter=2000)
-clf_cnn.fit(X_train, y_train)
 
-pred_mlp = clf_mlp.predict(X_test)
-print("total", len(y_test))
-print(np.sum(pred_mlp == y_test)) 
 
-pred_cnn = clf_mlp.predict(X_test)
-print("total", len(y_test))
-print(np.sum(pred_cnn == y_test)) 
 
-with open('model_pkl', 'wb') as files: pickle.dump(clf_mlp, files)
+
+from sklearn.metrics import accuracy_score
+
+
+y_pred = history.predict(X_test)
+print('Accuracy: {:.2f}'.format(accuracy_score(y_test, y_pred)))
+with open('model_pkl', 'wb') as files: pickle.dump(history, files)
 

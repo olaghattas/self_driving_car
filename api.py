@@ -43,7 +43,6 @@ def predict():
     # You can add the test cases you made in the previous function, but in our case here you are just testing the POST functionality
     if param:
         # preprocess
-        img = param[400:900,700:1650]
         # blur to remove details
         img = cv2.blur(img,(10,10))
         retval, img = cv2.threshold(img,170,255, cv2.THRESH_BINARY)

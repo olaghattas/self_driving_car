@@ -9,7 +9,7 @@ from sklearn.metrics import confusion_matrix
 from PIL import Image
 import pickle
 import matplotlib.pyplot as plt
-%matplotlib inline
+# C:\Users\leeng\Desktop\spring 2022\project\img
 
 import seaborn as sns
 np.random.seed(0)
@@ -17,11 +17,13 @@ np.random.seed(0)
 X = []
 y = []
 
-files_name = [f for f in listdir('img') if isfile(join('img', f))]
+folder_name = 'image_bar'
+files_name = [f for f in listdir(folder_name) if isfile(join(folder_name, f))]
+
 for name in files_name:
     try:
         # load the image
-        img = cv2.imread(join('img', name),0)
+        img = cv2.imread(join(folder_name , name),0)
         img = img[400:900,700:1650]
         # blur to remove details
         img = cv2.blur(img,(10,10))
@@ -107,4 +109,4 @@ ax.set_xlabel('predicted label')
 ax.set_ylabel('true label')
 ax.set_title('confusion matrix')
 
-with open('model_pkl', 'wb') as files: pickle.dump(model, files)
+with open('model_pkl_1', 'wb') as files: pickle.dump(model, files)

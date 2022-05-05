@@ -9,6 +9,7 @@ import json
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         ser = serial.Serial("COM4", 9600)
+        print("Ser", ser)
         self.ser = ser
 
         self.get_variables()
@@ -44,7 +45,7 @@ class Ui_MainWindow(object):
         self.right.clicked.connect(self.the_right_button_was_clicked)
         
 
-        url = 'http://192.168.86.26:8080'
+        url = 'http://192.168.86.30:8080'
         self.view = QtWebEngineWidgets.QWebEngineView(self.centralwidget)
         self.view.load(url)
         self.view.setGeometry(QtCore.QRect(450, 25, 1000, 1000))
@@ -71,7 +72,8 @@ class Ui_MainWindow(object):
         im = pyautogui.screenshot()
         count = str(count)
         img_name= image + "_" + count +'.png'
-        path = './images/'+ image + '/' + img_name
+        # path = './images/'+ image + '/' + img_name
+        path = './test_2/' + img_name
         im.save(path)
 
     def the_forward_button_was_clicked(self,file1):
